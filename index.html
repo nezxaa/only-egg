@@ -1056,13 +1056,19 @@
 
     function showSurprise() {
       const content = document.getElementById('surpriseContent');
-      surpriseOpen = !surpriseOpen;
       
-      if (surpriseOpen) {
+      // Toggle logic yang benar
+      if (!surpriseOpen) {
         content.classList.add('show');
+        content.style.display = 'block';
         launchConfetti();
+        surpriseOpen = true;
       } else {
         content.classList.remove('show');
+        setTimeout(() => {
+          content.style.display = 'none';
+        }, 800);
+        surpriseOpen = false;
       }
     }
 
