@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+  <title>Happy Birthday 🎂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #feefe5;
+      --bg2:      #fff7f2;
+      --ink:      #2b1d14;
+      --soft:     #7a5a4a;
+      --accent:   #d4545a;
+      --accent2:  #e8956d;
+      --pink:     #f9ddd6;
+      --pixel:    'Pixelify Sans', sans-serif;
+      --serif:    'Lora', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--serif);
+      overflow-x: hidden;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-wrap {
+      max-width: 800px;
+      width: 100%;
+      padding: 0 18px;
+      margin: 0 auto;
+    }
+
+    /* ─── LOADING SCREEN ──────────────────────────────────────── */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #loading-screen.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 4px solid var(--pink);
+      border-top-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-family: var(--pixel);
+      font-size: 14px;
+      color: var(--soft);
+      margin-top: 24px;
+      letter-spacing: 4px;
+      animation: pulse-text 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-text {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .loading-heart {
+      font-size: 32px;
+      margin-bottom: 16px;
+      animation: heartbeat 1s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.15); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.1); }
+      60% { transform: scale(1); }
+    }
+
+    /* ─── Floating Hearts ────────────────────────────────────── */
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.15;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(0deg) scale(0.5);
+        opacity: 0;
+      }
+      10% { opacity: 0.15; }
+      90% { opacity: 0.15; }
+      100% {
+        transform: translateY(-10vh) rotate(720deg) scale(1);
+        opacity: 0;
+      }
+    }
+
+    /* ─── Main Content ────────────────────────────────────────── */
+    #main-content {
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    #main-content.show {
+      opacity: 1;
+    }
+
+    /* ─── Confetti Canvas ───────────────────────────────────── */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ─── SECTION 1 – Hero ──────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 16px;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 0%, #fbd5c8 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 80% 100%, #f9c9e0 0%, transparent 60%);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      font-size: 12px;
+      opacity: 0;
+      animation: twinkle var(--dur, 3s) var(--delay, 0s) infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50%       { opacity: 0.7; transform: scale(1.2); }
+    }
+
+    .photo-frame {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 4px solid var(--accent2);
+      padding: 6px;
+      background: white;
+      box-shadow: 0 8px 30px rgba(212, 84, 90, 0.2);
+      margin-bottom: 24px;
+      overflow: hidden;
+      flex-shrink: 0;
+      animation: fadeInUp 1s ease;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .hero-date {
+      font-family: var(--pixel);
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      position: relative;
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+
+    .hero-title {
+      font-family: var(--pixel);
+      font-size: clamp(36px, 8vw, 72px);
+      line-height: 1.15;
+      color: var(--ink);
+      position: relative;
+      margin-bottom: 16px;
+      animation: fadeInUp 1s ease 0.4s both;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-name-placeholder {
+      font-family: var(--pixel);
+      font-size: clamp(28px, 6vw, 52px);
+      color: var(--accent2);
+      display: block;
+      margin-top: 8px;
+    }
+
+    .hero-sub {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(15px, 2.5vw, 18px);
+      color: var(--soft);
+      margin-top: 12px;
+      position: relative;
+      animation: fadeInUp 1s ease 0.6s both;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--pixel);
+      font-size: 11px;
+      color: var(--soft);
+      opacity: 0.6;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─── SECTION 2 – Pesan ─────────────────────────────────── */
+    #pesan {
+      width: 100%;
+      padding: 60px 0 40px;
+    }
+
+    .section-eyebrow {
+      font-family: var(--pixel);
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--accent2);
+      opacity: 0.35;
+    }
+
+    .section-eyebrow-center {
+      font-family: var(--pixel);
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .section-eyebrow-center::before,
+    .section-eyebrow-center::after {
+      content: '';
+      flex: 1;
+      max-width: 100px;
+      height: 1px;
+      background: var(--accent2);
+      opacity: 0.35;
+    }
+
+    .message-card {
+      background: var(--bg2);
+      border: 1.5px solid #eacfc4;
+      border-radius: 16px;
+      padding: 36px 24px;
+      margin-bottom: 24px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      width: 100%;
+    }
+
+    .message-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .message-card::before {
+      content: attr(data-emoji);
+      position: absolute;
+      top: -18px;
+      left: 24px;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .message-card p {
+      font-size: clamp(15px, 2.2vw, 17px);
+      line-height: 1.85;
+      color: var(--ink);
+    }
+
+    .message-card p + p {
+      margin-top: 16px;
+    }
+
+    .message-card .italic {
+      font-style: italic;
+      color: var(--soft);
+      font-size: 0.93em;
+    }
+
+    /* ─── SECTION 3 – Lagu ───────────────────────────────────── */
+    #lagu {
+      width: 100%;
+      padding: 40px 0 60px;
+    }
+
+    .song-card {
+      background: var(--bg2);
+      border: 1.5px solid #eacfc4;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .song-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(212, 84, 90, 0.1);
+    }
+
+    .song-cover {
+      width: 70px;
+      height: 70px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--pink);
+    }
+
+    .song-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .song-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .song-title {
+      font-family: var(--serif);
+      font-size: clamp(15px, 2vw, 17px);
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .song-artist {
+      font-family: var(--serif);
+      font-size: clamp(13px, 1.6vw, 15px);
+      color: var(--soft);
+      font-style: italic;
+    }
+
+    .song-play-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .song-play-btn:hover {
+      background: #b83e44;
+      transform: scale(1.08);
+    }
+
+    .song-play-btn:active {
+      transform: scale(0.92);
+    }
+
+    .song-play-btn svg {
+      fill: white;
+      width: 18px;
+      height: 18px;
+    }
+
+    .song-duration {
+      font-family: var(--pixel);
+      font-size: 11px;
+      color: var(--soft);
+      min-width: 36px;
+      text-align: center;
+    }
+
+    .song-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .song-progress {
+      width: 100%;
+      height: 3px;
+      background: #eacfc4;
+      border-radius: 2px;
+      margin-top: 6px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .song-progress-bar {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    /* ─── SECTION 4 – Countdown ──────────────────────────────── */
+    #countdown-section {
+      width: 100%;
+      padding: 20px 0 40px;
+      text-align: center;
+    }
+
+    .countdown-box {
+      background: var(--bg2);
+      border: 1.5px solid #eacfc4;
+      border-radius: 16px;
+      padding: 24px 28px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .countdown-box .label {
+      font-family: var(--pixel);
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--soft);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .countdown-numbers {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .countdown-item {
+      text-align: center;
+    }
+
+    .countdown-item .number {
+      font-family: var(--pixel);
+      font-size: clamp(24px, 4vw, 36px);
+      color: var(--accent);
+      display: block;
+    }
+
+    .countdown-item .label-small {
+      font-family: var(--pixel);
+      font-size: 9px;
+      color: var(--soft);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ─── SECTION 5 – Surprise + Voice Note ────────────────── */
+    #surprise {
+      width: 100%;
+      padding: 40px 16px 60px;
+      text-align: center;
+    }
+
+    .surprise-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 18px 48px;
+      border-radius: 50px;
+      font-family: var(--pixel);
+      font-size: 18px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(212, 84, 90, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .surprise-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 30px rgba(212, 84, 90, 0.4);
+      background: #b83e44;
+    }
+
+    .surprise-btn:active {
+      transform: scale(0.95);
+    }
+
+    .surprise-content {
+      margin-top: 32px;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      background: var(--bg2);
+      border: 1.5px solid #eacfc4;
+      border-radius: 20px;
+      padding: 40px 28px;
+    }
+
+    .surprise-content.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .surprise-content p {
+      font-size: clamp(17px, 2.5vw, 21px);
+      line-height: 1.9;
+      color: var(--ink);
+      font-family: var(--serif);
+    }
+
+    .surprise-content .sub-message {
+      font-style: italic;
+      color: var(--soft);
+      font-size: 0.9em;
+      margin-top: 12px;
+    }
+
+    /* ─── Voice Note inside Surprise ────────────────────────── */
+    .vn-in-surprise {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1.5px dashed #eacfc4;
+    }
+
+    .vn-in-surprise .vn-label {
+      font-family: var(--pixel);
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .vn-in-surprise .vn-player {
+      width: 100%;
+      max-width: 380px;
+      border-radius: 12px;
+      background: var(--pink);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0 auto;
+    }
+
+    .vn-in-surprise .vn-top-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .vn-in-surprise .vn-play-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .vn-in-surprise .vn-play-btn:hover {
+      background: #b83e44;
+      transform: scale(1.08);
+    }
+
+    .vn-in-surprise .vn-play-btn:active {
+      transform: scale(0.92);
+    }
+
+    .vn-in-surprise .vn-play-btn svg {
+      fill: white;
+      width: 16px;
+      height: 16px;
+    }
+
+    .vn-in-surprise .vn-waveform {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 28px;
+      min-width: 60px;
+    }
+
+    .vn-in-surprise .vn-bar {
+      width: 3px;
+      border-radius: 2px;
+      background: var(--accent2);
+      animation: waveAnim var(--spd, 0.8s) ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+
+    @keyframes waveAnim {
+      0%   { transform: scaleY(0.3); opacity: 0.5; }
+      100% { transform: scaleY(1);   opacity: 1;   }
+    }
+
+    .vn-in-surprise .vn-duration {
+      font-family: var(--pixel);
+      font-size: 11px;
+      color: var(--soft);
+      white-space: nowrap;
+      min-width: 36px;
+      text-align: center;
+    }
+
+    /* ─── Voice Note Progress Bar ───────────────────────────── */
+    .vn-progress-wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .vn-progress {
+      flex: 1;
+      height: 3px;
+      background: #eacfc4;
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .vn-progress-bar {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.1s ease;
+    }
+
+    .vn-time-current {
+      font-family: var(--pixel);
+      font-size: 10px;
+      color: var(--soft);
+      min-width: 32px;
+      text-align: center;
+    }
+
+    .vn-in-surprise .vn-hint {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--soft);
+      opacity: 0.75;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    #footer {
+      text-align: center;
+      padding: 32px 16px 60px;
+      font-family: var(--pixel);
+      font-size: 13px;
+      color: #c9a898;
+      width: 100%;
+    }
+
+    .divider {
+      width: 40px;
+      height: 3px;
+      background: var(--accent2);
+      border-radius: 2px;
+      margin: 0 auto 48px;
+      opacity: 0.5;
+    }
+
+    /* ─── Responsive ────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .photo-frame {
+        width: 140px;
+        height: 140px;
+      }
+      
+      .surprise-btn {
+        padding: 14px 32px;
+        font-size: 15px;
+      }
+
+      .song-cover {
+        width: 56px;
+        height: 56px;
+      }
+
+      .song-card {
+        padding: 14px;
+        gap: 12px;
+      }
+
+      .countdown-numbers {
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ═══ LOADING SCREEN ════════════════════════════════════════ -->
+  <div id="loading-screen">
+    <div class="loading-heart">🤍</div>
+    <div class="loader"></div>
+    <div class="loading-text">loading...</div>
+  </div>
+
+  <!-- ═══ FLOATING HEARTS ════════════════════════════════════════ -->
+  <div class="floating-hearts" id="floatingHearts"></div>
+
+  <!-- ═══ MAIN CONTENT ═══════════════════════════════════════════ -->
+  <div id="main-content" class="app-wrap">
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- ═══ HERO ══════════════════════════════════════════════ -->
+    <section id="hero">
+      <div class="stars" id="stars"></div>
+      
+      <div class="photo-frame">
+        <img src="E:\Uncategorized\ultah\Images\Foto-Sanja.jpg" alt="Foto" />
+      </div>
+
+      <div class="hero-date">24 Juni 2026 ✦</div>
+      <h1 class="hero-title">
+        Happy Birthday,<br>
+        <span class="hero-name-placeholder">Sanjaa sayangg</span>
+      </h1>
+      <p class="hero-sub">From your mamas</p>
+      <div class="scroll-hint"><span>↓</span><span>scroll</span></div>
+    </section>
+
+    <!-- ═══ PESAN ══════════════════════════════════════════════ -->
+    <section id="pesan">
+      <div class="section-eyebrow">mau yapping bentar</div>
+
+      <div class="message-card" data-emoji="🌸">
+        <p>Haii sweet seventeen ya sayangg, selamat ulang tahun, maaf kalo alay ngasih beginian. Tapi ini yang cuma ku bisa kasih ke kamu sekarang, tau sendiri aku lagi sakit + uang ku juga lagi menipiss bangett.</p>
+        <p class="italic"></p>
+      </div>
+
+      <div class="message-card" data-emoji="🤍">
+        <p>Kadang aku tuh masih heran, kok bisa aku bisa dapat cewek kayak kamu, aku ga tau ngomongnya gimana, tapi aku bener bener sayang sama kamuu! Kamu bener bener first time experience aku dan aku dapat yang se perceft iniii, dan maafin juga kalau aku masih ada banyak kurangnya yaa.. tapi itu ga menutup seberapa besar cinta ku ke kamu (asekk)</p>
+        <p>Semoga di usia yang baru ini kamu makin bahagia, makin sehat, dan semua yang kamu pengen pelan-pelan terwujud. Kamu layak dapet yang terbaikk sesuai dengan perjuanganmuu.</p>
+        <p class="italic">Dan nanti kalau aku udah baikan, kita rayain bareng, ya. Itu janji aku. 🌷</p>
+      </div>
+    </section>
+
+    <!-- ═══ LAGU ════════════════════════════════════════════════ -->
+    <section id="lagu">
+      <div class="section-eyebrow-center">Kalo denger ini langsung keinget kamu ✦</div>
+      
+      <div class="song-card">
+        <div class="song-cover">
+          <img src="https://imgs.search.brave.com/rJt5dxF1QclTVhYrphyLksTq95nzOZmEcYdXFJrB5p8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9vYWts/YW5kcG9zdG9ubGlu/ZS5jb20vd3AtY29u/dGVudC91cGxvYWRz/LzIwMTcvMDMvRGl2/aWRlLWNvdmVyXy5q/cGc" alt="Cover Lagu" />
+        </div>
+        <div class="song-info">
+          <div class="song-title">Perfect</div>
+          <div class="song-artist">Ed Sheeran</div>
+          <div class="song-progress" id="progressContainer">
+            <div class="song-progress-bar" id="progressBar"></div>
+          </div>
+        </div>
+        <div class="song-controls">
+          <span class="song-duration" id="songDuration">0:00</span>
+          <button class="song-play-btn" id="playBtn" onclick="toggleSong()">
+            <svg viewBox="0 0 24 24" id="playIcon"><polygon points="5,3 19,12 5,21"/></svg>
+          </button>
+        </div>
+        <audio id="audioPlayer" src="E:\Uncategorized\ultah\Audio\Perfect.mp3" preload="metadata"></audio>
+      </div>
+    </section>
+
+    <!-- ═══ COUNTDOWN ════════════════════════════════════════════ -->
+    <section id="countdown-section">
+      <div class="countdown-box">
+        <div class="label">menuju ulang tahun berikutnya</div>
+        <div class="countdown-numbers">
+          <div class="countdown-item">
+            <span class="number" id="days">00</span>
+            <span class="label-small">hari</span>
+          </div>
+          <div class="countdown-item">
+            <span class="number" id="hours">00</span>
+            <span class="label-small">jam</span>
+          </div>
+          <div class="countdown-item">
+            <span class="number" id="minutes">00</span>
+            <span class="label-small">menit</span>
+          </div>
+          <div class="countdown-item">
+            <span class="number" id="seconds">00</span>
+            <span class="label-small">detik</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SURPRISE + VOICE NOTE ══════════════════════════════ -->
+    <section id="surprise">
+      <div class="section-eyebrow-center">ada satu lagi ✦</div>
+      
+      <button class="surprise-btn" onclick="showSurprise()">🎁 buka kejutan</button>
+      
+      <div class="surprise-content" id="surpriseContent">
+        <p>
+          Ada beberapa hal <br>
+          yang cuma bisa ku omongin langsung ❤︎<br>
+        </p>
+        <p class="sub-message">maap kalo ga jelas, spontan soalnya ehe (alay juga)</p>
+        
+        <div class="vn-in-surprise">
+          <div class="vn-label">🎙 voice note</div>
+          <div class="vn-player">
+            <div class="vn-top-row">
+              <button class="vn-play-btn" id="surprisePlayBtn" onclick="toggleSurpriseAudio()">
+                <svg viewBox="0 0 24 24" id="surprisePlayIcon"><polygon points="5,3 19,12 5,21"/></svg>
+              </button>
+              <div class="vn-waveform" id="surpriseWaveform"></div>
+              <span class="vn-duration" id="surpriseAudioDuration">0:00</span>
+            </div>
+            <div class="vn-progress-wrapper">
+              <span class="vn-time-current" id="vnCurrentTime">0:00</span>
+              <div class="vn-progress" id="vnProgressContainer">
+                <div class="vn-progress-bar" id="vnProgressBar"></div>
+              </div>
+              <span class="vn-duration" id="vnTotalDuration">0:00</span>
+            </div>
+          </div>
+          <p class="vn-hint">tekan play untuk dengerin 🤍</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER ══════════════════════════════════════════════ -->
+    <footer id="footer">Nezaa</footer>
+  </div>
+
+  <!-- ═══ AUDIO UNTUK VOICE NOTE (TERPISAH) ═══════════════════════ -->
+  <audio id="voiceNotePlayer" src="E:\Uncategorized\ultah\Audio\voicenote.mp3" preload="metadata"></audio>
+
+  <script>
+    // ─── LOADING SCREEN ────────────────────────────────────────
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        document.getElementById('loading-screen').classList.add('hide');
+        document.getElementById('main-content').classList.add('show');
+      }, 2500);
+    });
+
+    // ─── Floating Hearts ──────────────────────────────────────
+    function createHearts() {
+      const container = document.getElementById('floatingHearts');
+      const emojis = ['♥', '♡', '❤', '💕', '💗'];
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'heart';
+        heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.fontSize = (15 + Math.random() * 25) + 'px';
+        heart.style.animationDuration = (15 + Math.random() * 25) + 's';
+        heart.style.animationDelay = (Math.random() * 20) + 's';
+        container.appendChild(heart);
+      }
+    }
+    createHearts();
+
+    // ─── Stars ─────────────────────────────────────────────────
+    const starsEl = document.getElementById('stars');
+    const emojis2 = ['✦', '✧', '·', '⋆', '✸'];
+    for (let i = 0; i < 28; i++) {
+      const s = document.createElement('span');
+      s.classList.add('star');
+      s.textContent = emojis2[Math.floor(Math.random() * emojis2.length)];
+      s.style.left    = Math.random() * 100 + '%';
+      s.style.top     = Math.random() * 100 + '%';
+      s.style.setProperty('--dur',   (2 + Math.random() * 3) + 's');
+      s.style.setProperty('--delay', (Math.random() * 4)     + 's');
+      s.style.fontSize = (10 + Math.random() * 10) + 'px';
+      starsEl.appendChild(s);
+    }
+
+    // ─── Scroll reveal ────────────────────────────────────────
+    const cards = document.querySelectorAll('.message-card');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach(c => observer.observe(c));
+
+    // ─── Confetti ─────────────────────────────────────────────
+    const canvas  = document.getElementById('confetti-canvas');
+    const ctx2    = canvas.getContext('2d');
+    let pieces    = [];
+    let animating = false;
+
+    function launchConfetti() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      pieces = [];
+      const confettiColors = ['#d4545a','#e8956d','#f9ddd6','#9C27B0','#2196F3','#FFC107','#4CAF50'];
+      for (let i = 0; i < 160; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width,
+          y: -10 - Math.random() * 200,
+          r: 5 + Math.random() * 7,
+          color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+          vx: (Math.random() - 0.5) * 4,
+          vy: 3 + Math.random() * 4,
+          angle: Math.random() * Math.PI * 2,
+          spin: (Math.random() - 0.5) * 0.2,
+        });
+      }
+      if (!animating) { animating = true; animateConfetti(); }
+    }
+
+    function animateConfetti() {
+      ctx2.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        ctx2.save();
+        ctx2.translate(p.x, p.y);
+        ctx2.rotate(p.angle);
+        ctx2.fillStyle = p.color;
+        ctx2.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.5);
+        ctx2.restore();
+        p.x     += p.vx;
+        p.y     += p.vy;
+        p.angle += p.spin;
+        p.vy    += 0.07;
+      });
+      pieces = pieces.filter(p => p.y < canvas.height + 20);
+      if (pieces.length > 0) requestAnimationFrame(animateConfetti);
+      else animating = false;
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // ─── Audio Controller ─────────────────────────────────────
+    const audio = document.getElementById('audioPlayer');
+    const voiceNote = document.getElementById('voiceNotePlayer');
+    
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const durEl = document.getElementById('songDuration');
+    const progressBar = document.getElementById('progressBar');
+    const progressContainer = document.getElementById('progressContainer');
+
+    const surprisePlayBtn = document.getElementById('surprisePlayBtn');
+    const surprisePlayIcon = document.getElementById('surprisePlayIcon');
+    const surpriseDurEl = document.getElementById('surpriseAudioDuration');
+    const surpriseWaveform = document.getElementById('surpriseWaveform');
+
+    // ─── Voice Note Progress Elements ────────────────────────
+    const vnProgressContainer = document.getElementById('vnProgressContainer');
+    const vnProgressBar = document.getElementById('vnProgressBar');
+    const vnCurrentTime = document.getElementById('vnCurrentTime');
+    const vnTotalDuration = document.getElementById('vnTotalDuration');
+
+    // ─── Song Player ─────────────────────────────────────────
+    audio.addEventListener('loadedmetadata', () => {
+      durEl.textContent = formatDuration(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      durEl.textContent = formatDuration(audio.duration - audio.currentTime);
+      const progress = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = progress + '%';
+    });
+
+    audio.addEventListener('ended', () => {
+      playIcon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+      durEl.textContent = formatDuration(audio.duration);
+      progressBar.style.width = '0%';
+    });
+
+    progressContainer.addEventListener('click', (e) => {
+      const rect = progressContainer.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const percentage = clickX / width;
+      audio.currentTime = percentage * audio.duration;
+    });
+
+    function toggleSong() {
+      if (!voiceNote.paused) {
+        voiceNote.pause();
+        surprisePlayIcon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+        surpriseWaveform.querySelectorAll('.vn-bar').forEach(b => b.style.animationPlayState = 'paused');
+      }
+
+      if (audio.paused) {
+        audio.play();
+        playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      } else {
+        audio.pause();
+        playIcon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+      }
+    }
+
+    function formatDuration(seconds) {
+      if (isNaN(seconds)) return '0:00';
+      const m = Math.floor(seconds / 60);
+      const s = Math.floor(seconds % 60);
+      return m + ':' + String(s).padStart(2, '0');
+    }
+
+    // ─── Countdown ────────────────────────────────────────────
+    function updateCountdown() {
+      const now = new Date();
+      const nextBirthday = new Date(2026, 5, 24);
+      
+      const diff = nextBirthday - now;
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // ─── Surprise ─────────────────────────────────────────────
+    let surpriseOpen = false;
+
+    function showSurprise() {
+      const content = document.getElementById('surpriseContent');
+      surpriseOpen = !surpriseOpen;
+      
+      if (surpriseOpen) {
+        content.classList.add('show');
+        launchConfetti();
+      } else {
+        content.classList.remove('show');
+      }
+    }
+
+    // ─── Surprise Voice Note ─────────────────────────────────
+
+    // Buat waveform bars
+    const barHeights2 = [30,55,40,70,50,80,45,60,35,75,55,40,65,30,85,50,70,45,60,35,80,55,40,70,50];
+    barHeights2.forEach((h, i) => {
+      const bar = document.createElement('div');
+      bar.className = 'vn-bar';
+      bar.style.height = (h / 100 * 28) + 'px';
+      bar.style.setProperty('--spd', (0.5 + Math.random() * 0.7) + 's');
+      bar.style.animationDelay = (i * 0.04) + 's';
+      bar.style.animationPlayState = 'paused';
+      surpriseWaveform.appendChild(bar);
+    });
+
+    // Voice note events
+    voiceNote.addEventListener('loadedmetadata', () => { 
+      const dur = voiceNote.duration;
+      surpriseDurEl.textContent = formatDuration(dur);
+      vnTotalDuration.textContent = formatDuration(dur);
+    });
+    
+    voiceNote.addEventListener('timeupdate', () => { 
+      const remaining = voiceNote.duration - voiceNote.currentTime;
+      surpriseDurEl.textContent = formatDuration(remaining);
+      vnCurrentTime.textContent = formatDuration(voiceNote.currentTime);
+      
+      const progress = (voiceNote.currentTime / voiceNote.duration) * 100;
+      vnProgressBar.style.width = progress + '%';
+    });
+    
+    voiceNote.addEventListener('ended', () => {
+      surprisePlayIcon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+      surpriseWaveform.querySelectorAll('.vn-bar').forEach(b => b.style.animationPlayState = 'paused');
+      surpriseDurEl.textContent = formatDuration(voiceNote.duration);
+      vnCurrentTime.textContent = formatDuration(voiceNote.duration);
+      vnProgressBar.style.width = '100%';
+      
+      setTimeout(() => {
+        vnProgressBar.style.width = '0%';
+        vnCurrentTime.textContent = '0:00';
+      }, 500);
+    });
+
+    // Click to seek on voice note progress bar
+    vnProgressContainer.addEventListener('click', (e) => {
+      const rect = vnProgressContainer.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const percentage = clickX / width;
+      voiceNote.currentTime = percentage * voiceNote.duration;
+    });
+
+    function toggleSurpriseAudio() {
+      if (!audio.paused) {
+        audio.pause();
+        playIcon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+      }
+
+      if (voiceNote.paused) {
+        voiceNote.play();
+        surprisePlayIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+        surpriseWaveform.querySelectorAll('.vn-bar').forEach(b => b.style.animationPlayState = 'running');
+      } else {
+        voiceNote.pause();
+        surprisePlayIcon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+        surpriseWaveform.querySelectorAll('.vn-bar').forEach(b => b.style.animationPlayState = 'paused');
+      }
+    }
+  </script>
+</body>
+</html>
