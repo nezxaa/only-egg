@@ -521,57 +521,7 @@
       transition: width 0.1s ease;
     }
 
-    /* ─── SECTION 4 – Countdown ──────────────────────────────── */
-    #countdown-section {
-      width: 100%;
-      padding: 20px 0 40px;
-      text-align: center;
-    }
-
-    .countdown-box {
-      background: var(--bg2);
-      border: 1.5px solid #eacfc4;
-      border-radius: 16px;
-      padding: 24px 28px;
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    .countdown-box .label {
-      font-family: var(--pixel);
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: var(--soft);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .countdown-numbers {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .countdown-item {
-      text-align: center;
-    }
-
-    .countdown-item .number {
-      font-family: var(--pixel);
-      font-size: clamp(24px, 4vw, 36px);
-      color: var(--accent);
-      display: block;
-    }
-
-    .countdown-item .label-small {
-      font-family: var(--pixel);
-      font-size: 9px;
-      color: var(--soft);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    /* ─── SECTION 5 – Surprise + Voice Note ────────────────── */
+    /* ─── SECTION 4 – Surprise + Voice Note ────────────────── */
     #surprise {
       width: 100%;
       padding: 40px 16px 60px;
@@ -812,10 +762,6 @@
         padding: 14px;
         gap: 12px;
       }
-
-      .countdown-numbers {
-        gap: 10px;
-      }
     }
   </style>
 </head>
@@ -840,7 +786,7 @@
       <div class="stars" id="stars"></div>
       
       <div class="photo-frame">
-        <img src="Images/Foto-Sanja.jpg" alt="Foto" />
+        <img src="images/Foto-Sanja.jpg" alt="Foto" />
       </div>
 
       <div class="hero-date">24 Juni 2026 ✦</div>
@@ -874,7 +820,7 @@
       
       <div class="song-card">
         <div class="song-cover">
-          <img src="https://imgs.search.brave.com/rJt5dxF1QclTVhYrphyLksTq95nzOZmEcYdXFJrB5p8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9vYWts/YW5kcG9zdG9ubGlu/ZS5jb20vd3AtY29u/dGVudC91cGxvYWRz/LzIwMTcvMDMvRGl2/aWRlLWNvdmVyXy5q/cGc" alt="Cover Lagu" />
+          <img src="images/Perfect-cover.jpg" alt="Cover Lagu" />
         </div>
         <div class="song-info">
           <div class="song-title">Perfect</div>
@@ -889,17 +835,15 @@
             <svg viewBox="0 0 24 24" id="playIcon"><polygon points="5,3 19,12 5,21"/></svg>
           </button>
         </div>
-        <audio id="audioPlayer" src="Audio/Perfect.mp3" preload="metadata"></audio>
+        <audio id="audioPlayer" src="audio/Perfect.mp3" preload="metadata"></audio>
       </div>
     </section>
-
-  
 
     <!-- ═══ SURPRISE + VOICE NOTE ══════════════════════════════ -->
     <section id="surprise">
       <div class="section-eyebrow-center">ada satu lagi ✦</div>
       
-      <button class="surprise-btn" onclick="showSurprise()">jann di buka</button>
+      <button class="surprise-btn" onclick="showSurprise()">🎁 buka kejutan</button>
       
       <div class="surprise-content" id="surpriseContent">
         <p>
@@ -936,7 +880,7 @@
   </div>
 
   <!-- ═══ AUDIO UNTUK VOICE NOTE (TERPISAH) ═══════════════════════ -->
-  <audio id="voiceNotePlayer" src="Audio/voicenote.mp3" preload="metadata"></audio>
+  <audio id="voiceNotePlayer" src="audio/voicenote.mp3" preload="metadata"></audio>
 
   <script>
     // ─── LOADING SCREEN ────────────────────────────────────────
@@ -1106,27 +1050,6 @@
       const s = Math.floor(seconds % 60);
       return m + ':' + String(s).padStart(2, '0');
     }
-
-    // ─── Countdown ────────────────────────────────────────────
-    function updateCountdown() {
-      const now = new Date();
-      const nextBirthday = new Date(2026, 5, 24);
-      
-      const diff = nextBirthday - now;
-      
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      document.getElementById('days').textContent = String(days).padStart(2, '0');
-      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
 
     // ─── Surprise ─────────────────────────────────────────────
     let surpriseOpen = false;
